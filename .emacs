@@ -23,7 +23,7 @@
 
 ;; Show-paren-mode settings
 (show-paren-mode t) ;; Включить выделения выражений между {}, [], ()
-(setq show-paren-style 'expression) ;; Выделить цветом выражения между {}, [], ()
+;;(setq show-paren-style 'expression) ;; Выделить цветом выражения между {}, [], ()
 
 ;; Electric-modes settings
 (electric-pair-mode 1) ;; Автозакрытие {}, [], () с переводом курсора внутрь скобок
@@ -36,7 +36,7 @@
 (tooltip-mode -1)
 (menu-bar-mode -1)
 (tool-bar-mode -1)
-(scroll-bar-mode -1)
+;;(scroll-bar-mode -1)
 (blink-cursor-mode -1)
 
 ;; Disable backup/autosave files
@@ -49,10 +49,9 @@
 (line-number-mode t)
 (global-linum-mode t)
 (column-number-mode t)
-;; (setq linum-format "  %d")
+(setq linum-format "  %d ")
 
 ;; Fringe settings
-(fringe-mode '(8 . 0)) ;; Ограничить текст только слева
 (setq-default indicate-empty-lines t)  ;; Отсутствие строки выделить глифами рядом с полоской с номером строки
 (setq-default indicate-buffer-boundaries 'left) ;; Индикация только слева
 
