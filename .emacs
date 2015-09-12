@@ -64,6 +64,48 @@
 (setq word-wrap t) ;; переносить по словам
 (global-visual-line-mode t)
 
+;; IDO plugin
+(require 'ido)
+(ido-mode t)
+(icomplete-mode t)
+(ido-everywhere t)
+(setq ido-virtual-buffer t)
+(setq ido-enable-flex-matching t)
+
+;; Syntax highlighting
+(require 'font-lock)
+(global-font-lock-mode t)
+(setq font-lock-maximum-decoration t)
+
+;; Indent settings
+(setq-default indent-tabs-mode nil)  ;; Отключить возможность ставить отступы Tab-ом
+(setq-default tab-width 2)
+(setq-default c-basic-offset 2)
+(setq-default standard-indent 2)
+(setq-default lisp-body-indent 2)
+(global-set-key (kbd "RET") 'newline-and-indent)
+
+;; Scrolling settings
+(setq scroll-step 1) ;; вверз вниз по одной строке
+
+;; Short messages
+(defalias 'yes-or-no-p 'y-or-n-p)
+
+;; Clipboard settings
+(setq x-select-enable-clipboard t)
+
+;; End of file newlines
+(setq require-final-newline t) ;; Добавить новую пустую строку в конце файла
+(setq next-line-add-newlines nil) ;; Не добавлять новую строку при смещении курсора
+
+;; Highlight search results
+(setq search-highlight t)
+(setq query-replace-highlight t)
+
+;; Easy transition between buffer: M-arrow-keys
+(if (equal nil (equal major-mode 'org-mode))
+    (windmove-default-keybindings 'meta))
+
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
