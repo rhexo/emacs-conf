@@ -106,6 +106,55 @@
 (if (equal nil (equal major-mode 'org-mode))
     (windmove-default-keybindings 'meta))
 
+;; Delete trailing whitespaces, format buffer and untabify when save buffer
+(defun format-current-buffer()
+  (indent-region (point-min)(point-max)))
+(defun untabify-current-buffer()
+  (if (not indent-tabs-mode)
+      (untabify (point-min)(point-max)))
+  nil)
+
+(defun my:space-format-hook()
+  (add-to-list 'write-file-functions 'format-current-buffer)
+  (add-to-list 'write-file-functions 'untabify-current-buffer)
+  (add-to-list 'write-file-functions 'delete-trailing-whitespace))
+
+(add-hook 'c++-mode-hook 'my:space-format-hook)
+(add-hook 'c-mode-hook 'my:space-format-hook)
+(add-hook 'lisp-mode-hook 'my:space-format-hook)
+(add-hook 'emacs-lisp-mode-hook 'my:space-format-hook)
+
+(setq-default truncate-lines 1)
+
+;; Display full pathname for files
+(add-hook 'find-file-hooks
+          '(lambda ()
+             (setq mode-line-buffer-identification 'buffer-file-truename)))
+
+(require 'auto-complete)
+(require 'auto-complete-config)
+(ac-config-default)
+
+(require 'yasnippet)
+(yas-global-mode 1)
+
+;; Добавляем возможность auto-complete завершать инклюды
+(defun my:ac-c-header-init()
+  (require 'auto-complete-c-headers)
+  (add-to-list 'ac-sources 'ac-source-c-headers))
+
+(add-hook 'c++-mode-hook 'my:ac-c-header-init)
+(add-hook 'c-mode-hook 'my:ac-c-header-init)
+
+;; Bookmarks settings
+(require 'bookmark)
+(setq bookmark-save-flag t) ;; автоматически сохранять закладки в файл
+(when (file-exists-p (concat user-emacs-directory "bookmarks"))
+  (bookmark-load bookmark-default-file t)) ;; попытаться найти и открыть файл с закладками
+(global-set-key (kbd "<f3>") 'bookmark-set) ;; создать закладку
+(global-set-key (kbd "<f4>") 'bookmark-jump) ;; прыгнуть на закладку по F4
+(global-set-key (kbd "<f5>") 'bookmark-bmenu-list) ;; открыть список закладок
+(setq bookmark-default-file (concat user-emacs-directory "bookmarks")) ;; хранить закадки в файле bookmarks
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
