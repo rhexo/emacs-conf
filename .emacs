@@ -2,7 +2,7 @@
 (when (>= emacs-major-version 24)
   (require 'package)
   (add-to-list 'package-archives
-	     '("melpa-stable" . "http://stable.melpa.org/packages/") t)
+               '("melpa-stable" . "http://stable.melpa.org/packages/") t)
   (package-initialize))
 
 ;; My name and email
@@ -155,6 +155,22 @@
 (global-set-key (kbd "<f4>") 'bookmark-jump) ;; прыгнуть на закладку по F4
 (global-set-key (kbd "<f5>") 'bookmark-bmenu-list) ;; открыть список закладок
 (setq bookmark-default-file (concat user-emacs-directory "bookmarks")) ;; хранить закадки в файле bookmarks
+
+;; installing from github repo
+;; git clone https://github/bbatsov/projectile.git
+;;
+;; projectile setup
+(add-to-list 'load-path "/home/rhexo/.emacs.d/projectile")
+
+(require 'projectile)
+(projectile-global-mode)
+
+(require 'helm-projectile)
+(setq projectile-completion-system 'helm)
+(helm-projectile-on)
+
+(setq projectile-switch-project-action 'helm-projectile)
+
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
