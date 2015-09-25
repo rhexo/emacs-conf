@@ -184,4 +184,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(font-lock-function-name-face ((t (:foreground "color-69"))))
+ '(helm-selection ((t (:background "color-237" :distant-foreground "black"))))
+ '(helm-selection-line ((t (:inherit highlight :background "color-237" :distant-foreground "black"))))
+ '(helm-visible-mark ((t (:background "color-235"))))
  '(minibuffer-prompt ((t (:foreground "yellow")))))
