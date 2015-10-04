@@ -172,6 +172,27 @@
 (setq projectile-switch-project-action 'helm-projectile)
 
 
+;;Настраиваем  cmake-project-mode
+
+(add-to-list 'load-path "/home/rhexo/.emacs.d/emacs-cmake-project")
+(require 'cmake-project)
+
+(defun maybe-cmake-project-hook ()
+  (if (file-exists-p "CMakeLists.txt") (cmake-project-mode)))
+
+(add-hook 'c-mode-hook 'maybe-cmake-project-hook)
+(add-hook 'c++-mode-hook 'maybe-cmake-project-hook)
+
+;; Enable cmake mode
+(setq auto-mode-alist
+      (append
+       '(("CMakeLists\\.txt\\'" . cmake-mode))
+       '(("\\.cmake\\'" . cmake-mode))
+       auto-mode-alist))
+
+(autoload 'cmake-mode "/home/rhexo/.emacs.d/cmake-mode.el" t)
+
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
