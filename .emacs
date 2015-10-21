@@ -9,6 +9,12 @@
 (setq user-full-name "%user-name%")
 (setq user-mail-address "%user-mail%")
 
+;; (add-to-list 'load-path "/home/rhexo/.emacs.d/badger-theme")
+;; (add-to-list 'load-path "/home/rhexo/.emacs.d/colorsarenice-theme")
+;; ;; load-theme
+;; (load-theme 'wombat t)
+;; (require 'colorsarenice-dark-theme)
+
 ;; Dired
 (require 'dired)
 (setq dired-recursive-deletes 'top)
@@ -126,6 +132,9 @@
 
 (setq-default truncate-lines 1)
 
+;; .h as .hpp.open in c++ mdoe.
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+
 ;; Display full pathname for files
 (add-hook 'find-file-hooks
           '(lambda ()
@@ -171,6 +180,24 @@
 
 (setq projectile-switch-project-action 'helm-projectile)
 
+;;(load "setup-helm.el")
+(require 'helm-config)
+;; (require 'helm-gtags)
+
+(global-set-key (kbd "M-x") 'helm-M-x)
+
+;; (setq
+;;  helm-gtags-ignore-case t
+;;  helm-gtags-auto-update t
+;;  helm-gtags-use-input-at-cursor t
+;;  helm-gtags-pulse-at-cursor t
+;;  helm-gtags-prefix-key "\C-cg"
+;;  helm-gtags-suggested-key-mapping t
+;;  helm-gtags-path-style 'relative)
+
+;; (add-hook 'c-mode-hook 'helm-gtags-mode)
+;; (add-hook 'c++-mode-hook 'helm-gtags-mode)
+;; (add-hook 'asm-mode-hook 'helm-gtags-mode)
 
 ;;Настраиваем  cmake-project-mode
 
@@ -204,8 +231,14 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(font-lock-function-name-face ((t (:foreground "color-69"))))
+ '(eshell-ls-directory ((t (:inherit font-lock-function-name-face))))
+ '(font-lock-constant-face ((t (:foreground "color-64"))))
+ '(font-lock-function-name-face ((t (:foreground "color-220"))))
+ '(font-lock-keyword-face ((t (:foreground "color-220"))))
+ '(font-lock-string-face ((t (:foreground "color-142"))))
  '(helm-selection ((t (:background "color-237" :distant-foreground "black"))))
  '(helm-selection-line ((t (:inherit highlight :background "color-237" :distant-foreground "black"))))
  '(helm-visible-mark ((t (:background "color-235"))))
- '(minibuffer-prompt ((t (:foreground "yellow")))))
+ '(link ((t (:foreground "color-68" :underline t))))
+ '(minibuffer-prompt ((t (:foreground "yellow"))))
+ '(region ((t (:background "color-237")))))
