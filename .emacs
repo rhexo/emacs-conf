@@ -45,10 +45,10 @@
 ;;(scroll-bar-mode -1)
 (blink-cursor-mode -1)
 
-;; Disable backup/autosave files
-(setq make-backup-file nil)
-(setq auto-save-default nil)
-(setq auto-save-list-file-name nil)
+;; ;; Disable backup/autosave files
+;; (setq make-backup-file nil)
+;; (setq auto-save-default nil)
+;; (setq auto-save-list-file-name nil)
 
 ;; Linum plugin
 (require 'linum)
@@ -180,11 +180,13 @@
 
 (setq projectile-switch-project-action 'helm-projectile)
 
+(setq projectile-tags-command "/usr/local/bin/exctags -Re -f \"%s\" %s")
+
 ;;(load "setup-helm.el")
 (require 'helm-config)
 ;; (require 'helm-gtags)
 
-(global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key (kbd "C-M-x") 'helm-M-x)
 
 ;; (setq
 ;;  helm-gtags-ignore-case t
@@ -218,6 +220,12 @@
        auto-mode-alist))
 
 (autoload 'cmake-mode "/home/rhexo/.emacs.d/cmake-mode.el" t)
+
+;; Disable backup/autosave files
+(setq make-backup-file nil)
+(setq auto-save-default nil)
+(setq auto-save-list-file-name nil)
+(setq backup-directory-alist '((".*" . "~/.Trash")))
 
 
 (custom-set-variables
