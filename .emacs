@@ -19,6 +19,7 @@
 (require 'dired)
 (setq dired-recursive-deletes 'top)
 
+
 ;; Imenu
 (require 'imenu)
 (setq imenu-auto-rescan t)
@@ -44,11 +45,6 @@
 (tool-bar-mode -1)
 ;;(scroll-bar-mode -1)
 (blink-cursor-mode -1)
-
-;; ;; Disable backup/autosave files
-;; (setq make-backup-file nil)
-;; (setq auto-save-default nil)
-;; (setq auto-save-list-file-name nil)
 
 ;; Linum plugin
 (require 'linum)
@@ -98,7 +94,7 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;; Clipboard settings
-(setq x-select-enable-clipboard t)
+;; (setq x-select-enable-clipboard t)
 
 ;; End of file newlines
 (setq require-final-newline t) ;; Добавить новую пустую строку в конце файла
@@ -140,20 +136,34 @@
           '(lambda ()
              (setq mode-line-buffer-identification 'buffer-file-truename)))
 
-(require 'auto-complete)
-(require 'auto-complete-config)
-(ac-config-default)
-
 (require 'yasnippet)
 (yas-global-mode 1)
 
-;; Добавляем возможность auto-complete завершать инклюды
-(defun my:ac-c-header-init()
-  (require 'auto-complete-c-headers)
-  (add-to-list 'ac-sources 'ac-source-c-headers))
 
-(add-hook 'c++-mode-hook 'my:ac-c-header-init)
-(add-hook 'c-mode-hook 'my:ac-c-header-init)
+(require 'irony)
+;; Setups irony-mode
+(add-hook 'c++-mode-hook 'irony-mode)
+(add-hook 'c-mode-hook 'irony-mode)
+(add-hook 'objc-mode-hook 'irony-mode)
+
+(defun my-irony-mode-hook ()
+  (define-key irony-mode-map [remap completion-at-point]
+    'irony-completion-at-point-async)
+  (define-key irony-mode-map [remap complete-symbol]
+    'irony-completion-at-point-async))
+(add-hook 'irony-mode-hook 'my-irony-mode-hook)
+(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+
+;; setups company-mode
+(require 'company)
+(add-hook 'after-init-hook 'global-company-mode)
+
+(add-to-list 'load-path "/home/rhexo/.emacs.d/company-irony-c-headers")
+(require 'company-irony-c-headers)
+
+;; setups company-irony
+(eval-after-load 'company
+  '(add-to-list 'company-backends '(company-irony-c-headers company-irony)))
 
 ;; Bookmarks settings
 (require 'bookmark)
@@ -165,7 +175,7 @@
 (global-set-key (kbd "<f5>") 'bookmark-bmenu-list) ;; открыть список закладок
 (setq bookmark-default-file (concat user-emacs-directory "bookmarks")) ;; хранить закадки в файле bookmarks
 
-;; installing from github repo
+;; install from github repo
 ;; git clone https://github/bbatsov/projectile.git
 ;;
 ;; projectile setup
@@ -201,6 +211,7 @@
 ;; (add-hook 'c++-mode-hook 'helm-gtags-mode)
 ;; (add-hook 'asm-mode-hook 'helm-gtags-mode)
 
+
 ;;Настраиваем  cmake-project-mode
 
 (add-to-list 'load-path "/home/rhexo/.emacs.d/emacs-cmake-project")
@@ -212,14 +223,34 @@
 (add-hook 'c-mode-hook 'maybe-cmake-project-hook)
 (add-hook 'c++-mode-hook 'maybe-cmake-project-hook)
 
-;; Enable cmake mode
+;; default build directory for cmake build
+(setq cmake-project-default-build-dir-name "build/")
+
+;; Enable cmake mode (syntax highlite for CMakeLists.txt)
+(autoload 'cmake-mode "/home/rhexo/.emacs.d/cmake-mode.el" t)
+
 (setq auto-mode-alist
       (append
        '(("CMakeLists\\.txt\\'" . cmake-mode))
        '(("\\.cmake\\'" . cmake-mode))
        auto-mode-alist))
 
-(autoload 'cmake-mode "/home/rhexo/.emacs.d/cmake-mode.el" t)
+;; setup cmake-ide
+;; (cmake-ide-setup)
+;; (setq cmake-ide-dir "/build")
+
+
+(require 'compile)
+(require 'cc-mode)
+;; Binding compile futures
+(add-hook 'c-mode-hook
+          (lambda() (define-key c-mode-map (kbd "C-c c") 'compile)))
+(add-hook 'c++-mode-hook
+          (lambda() (define-key c++-mode-map (kbd "C-c c") 'compile)))
+;; cmake-project
+(add-hook 'c++-mode-hook
+          (lambda() (define-key c++-mode-map (kbd "C-c m") 'cmake-project-configure-project)))
+
 
 ;; Disable backup/autosave files
 (setq make-backup-file nil)
