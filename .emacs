@@ -121,6 +121,22 @@
   (add-to-list 'write-file-functions 'untabify-current-buffer)
   (add-to-list 'write-file-functions 'delete-trailing-whitespace))
 
+
+;; org-mode configure
+(require 'org)
+
+;; the following lines are always needed. Choose your own keys.
+(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
+(global-set-key "\C-cl" 'org-store-link)
+(global-set-key "\C-ca" 'org-agenda)
+;; (global-set-key "\C-cc" 'org-capture)
+;; (global-set-key "\C-cb" 'org-iswitchb)
+(setq org-log-done t)
+
+;; agenda global files configure
+(setq org-agenda-files( list "~/ydisk/proj/websnap/websnap.blup.org"
+                             "~/ydisk/proj/app-lib/orgmode-instr.org"))
+
 (add-hook 'c++-mode-hook 'my:space-format-hook)
 (add-hook 'c-mode-hook 'my:space-format-hook)
 (add-hook 'lisp-mode-hook 'my:space-format-hook)
@@ -158,12 +174,20 @@
 (require 'company)
 (add-hook 'after-init-hook 'global-company-mode)
 
-(add-to-list 'load-path "/home/rhexo/.emacs.d/company-irony-c-headers")
-(require 'company-irony-c-headers)
+;; Has a bug : variable void reference for irony--working-directory
+;; (add-to-list 'load-path "/home/rhexo/.emacs.d/company-irony-c-headers")
+;; (require 'company-irony-c-headers)
 
 ;; setups company-irony
 (eval-after-load 'company
-  '(add-to-list 'company-backends '(company-irony-c-headers company-irony)))
+  '(add-to-list 'company-backends 'company-irony))
+;; (eval-after-load 'company
+;;   '(add-to-list 'company-backends '(company-irony-c-headers company-irony)))
+
+(add-hook 'c-mode-hook
+          (lambda() (define-key c-mode-map (kbd "C-c TAB") 'irony-completion-at-point-async)))
+(add-hook 'c++-mode-hook
+          (lambda() (define-key c++-mode-map (kbd "C-c TAB") 'irony-completion-at-point-async)))
 
 ;; Bookmarks settings
 (require 'bookmark)
@@ -280,4 +304,5 @@
  '(helm-visible-mark ((t (:background "color-235"))))
  '(link ((t (:foreground "color-68" :underline t))))
  '(minibuffer-prompt ((t (:foreground "yellow"))))
+ '(org-agenda-structure ((t (:foreground "color-69"))))
  '(region ((t (:background "color-237")))))
