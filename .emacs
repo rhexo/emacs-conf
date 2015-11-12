@@ -88,7 +88,7 @@
 (global-set-key (kbd "RET") 'newline-and-indent)
 
 ;; Scrolling settings
-(setq scroll-step 1) ;; вверз вниз по одной строке
+(setq scroll-step 4) ;; вверз вниз по одной строке
 
 ;; Short messages
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -107,6 +107,7 @@
 ;; Easy transition between buffer: M-arrow-keys
 (if (equal nil (equal major-mode 'org-mode))
     (windmove-default-keybindings 'meta))
+
 
 ;; Delete trailing whitespaces, format buffer and untabify when save buffer
 (defun format-current-buffer()
@@ -129,13 +130,20 @@
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-ca" 'org-agenda)
+
 ;; (global-set-key "\C-cc" 'org-capture)
 ;; (global-set-key "\C-cb" 'org-iswitchb)
 (setq org-log-done t)
 
+(setq org-replace-disputed-keys)
+
 ;; agenda global files configure
 (setq org-agenda-files( list "~/ydisk/proj/websnap/websnap.blup.org"
                              "~/ydisk/proj/app-lib/orgmode-instr.org"))
+
+(add-hook 'org-mode-hook
+          (lambda() (define-key org-mode-map (kbd "<f7>") 'org-insert-heading)))
+
 
 (add-hook 'c++-mode-hook 'my:space-format-hook)
 (add-hook 'c-mode-hook 'my:space-format-hook)
@@ -296,13 +304,18 @@
  ;; If there is more than one, they won't work right.
  '(eshell-ls-directory ((t (:inherit font-lock-function-name-face))))
  '(font-lock-constant-face ((t (:foreground "color-64"))))
- '(font-lock-function-name-face ((t (:foreground "color-220"))))
- '(font-lock-keyword-face ((t (:foreground "color-220"))))
+ '(font-lock-function-name-face ((t (:foreground "yellow"))))
+ '(font-lock-keyword-face ((t (:foreground "yellow"))))
  '(font-lock-string-face ((t (:foreground "color-142"))))
+ '(font-lock-type-face ((t (:foreground "color-100"))))
  '(helm-selection ((t (:background "color-237" :distant-foreground "black"))))
  '(helm-selection-line ((t (:inherit highlight :background "color-237" :distant-foreground "black"))))
  '(helm-visible-mark ((t (:background "color-235"))))
  '(link ((t (:foreground "color-68" :underline t))))
  '(minibuffer-prompt ((t (:foreground "yellow"))))
  '(org-agenda-structure ((t (:foreground "color-69"))))
+ '(outline-1 ((t (:foreground "color-69"))))
+ '(outline-2 ((t (:foreground "color-75"))))
+ '(outline-3 ((t (:foreground "color-24"))))
+ '(outline-4 ((t (:foreground "color-64"))))
  '(region ((t (:background "color-237")))))
