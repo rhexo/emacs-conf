@@ -291,6 +291,10 @@
 (setq backup-directory-alist '((".*" . "~/.Trash")))
 
 
+
+;; js-mode
+(add-to-list 'load-path "/home/rhexo/.emacs.d/js3-mode")
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -302,10 +306,11 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(dired-directory ((t (:foreground "color-136" :width normal))))
  '(eshell-ls-directory ((t (:inherit font-lock-function-name-face))))
  '(font-lock-constant-face ((t (:foreground "color-64"))))
- '(font-lock-function-name-face ((t (:foreground "yellow"))))
- '(font-lock-keyword-face ((t (:foreground "yellow"))))
+ '(font-lock-function-name-face ((t (:inherit font-lock-builtin-face))))
+ '(font-lock-keyword-face ((t (:foreground "color-64"))))
  '(font-lock-string-face ((t (:foreground "color-142"))))
  '(font-lock-type-face ((t (:foreground "color-100"))))
  '(helm-selection ((t (:background "color-237" :distant-foreground "black"))))
@@ -314,7 +319,7 @@
  '(link ((t (:foreground "color-68" :underline t))))
  '(minibuffer-prompt ((t (:foreground "yellow"))))
  '(org-agenda-structure ((t (:foreground "color-69"))))
- '(outline-1 ((t (:foreground "color-69"))))
+ '(outline-1 ((t (:foreground "color-178"))))
  '(outline-2 ((t (:foreground "color-142"))))
  '(outline-3 ((t (:foreground "color-94"))))
  '(outline-4 ((t (:foreground "color-64"))))
