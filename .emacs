@@ -308,10 +308,11 @@
  ;; If there is more than one, they won't work right.
  '(dired-directory ((t (:foreground "color-75" :width normal))))
  '(eshell-ls-directory ((t (:inherit font-lock-function-name-face))))
- '(font-lock-builtin-face ((t (:foreground "color-96"))))
+ '(font-lock-builtin-face ((t (:foreground "color-142"))))
  '(font-lock-constant-face ((t (:foreground "color-100"))))
  '(font-lock-function-name-face ((t (:inherit font-lock-builtin-face))))
- '(font-lock-keyword-face ((t (:foreground "color-58"))))
+ '(font-lock-keyword-face ((t (:foreground "color-142"))))
+ '(font-lock-preprocessor-face ((t (:foreground "color-60"))))
  '(font-lock-string-face ((t (:foreground "color-221"))))
  '(font-lock-type-face ((t (:foreground "color-221"))))
  '(helm-selection ((t (:background "color-237" :distant-foreground "black"))))
