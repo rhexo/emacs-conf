@@ -293,7 +293,7 @@
 
 
 ;; js-mode
-(add-to-list 'load-path "/home/rhexo/.emacs.d/js3-mode")
+;;(add-to-list 'load-path "/home/rhexo/.emacs.d/js3-mode")
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -306,7 +306,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(dired-directory ((t (:foreground "color-75" :width normal))))
+ '(dired-directory ((t (:foreground "color-148" :weight semi-bold))))
  '(eshell-ls-directory ((t (:inherit font-lock-function-name-face))))
  '(font-lock-builtin-face ((t (:foreground "color-142"))))
  '(font-lock-constant-face ((t (:foreground "color-100"))))
@@ -319,7 +319,7 @@
  '(helm-selection-line ((t (:inherit highlight :background "color-237" :distant-foreground "black"))))
  '(helm-visible-mark ((t (:background "color-235"))))
  '(link ((t (:foreground "color-68" :underline t))))
- '(minibuffer-prompt ((t (:foreground "color-172"))))
+ '(minibuffer-prompt ((t (:foreground "color-222"))))
  '(org-agenda-structure ((t (:foreground "color-69"))))
  '(outline-1 ((t (:foreground "color-178"))))
  '(outline-2 ((t (:foreground "color-142"))))
