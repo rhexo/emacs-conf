@@ -85,7 +85,17 @@
 (setq-default c-basic-offset 2)
 (setq-default standard-indent 2)
 (setq-default lisp-body-indent 2)
-(global-set-key (kbd "RET") 'newline-and-indent)
+
+;; 21-12-2015
+;;(global-set-key (kbd "RET") 'newline-and-indent)
+;; /
+
+(defun indent-buffer ()
+  (interactive)
+  (save-excursion
+    (indent-region   (point-min) (point-max) nil)))
+(global-set-key [f12] 'indent-buffer)
+;;
 
 ;; Scrolling settings
 (setq scroll-step 4) ;; вверз вниз по одной строке
@@ -109,19 +119,20 @@
     (windmove-default-keybindings 'meta))
 
 
+;;21-12-2015
 ;; Delete trailing whitespaces, format buffer and untabify when save buffer
-(defun format-current-buffer()
-  (indent-region (point-min)(point-max)))
-(defun untabify-current-buffer()
-  (if (not indent-tabs-mode)
-      (untabify (point-min)(point-max)))
-  nil)
+;; (defun format-current-buffer()
+;;   (indent-region (point-min)(point-max)))
+;; (defun untabify-current-buffer()
+;;   (if (not indent-tabs-mode)
+;;       (untabify (point-min)(point-max)))
+;;   nil)
 
-(defun my:space-format-hook()
-  (add-to-list 'write-file-functions 'format-current-buffer)
-  (add-to-list 'write-file-functions 'untabify-current-buffer)
-  (add-to-list 'write-file-functions 'delete-trailing-whitespace))
-
+;; (defun my:space-format-hook()
+;;   (add-to-list 'write-file-functions 'format-current-buffer)
+;;   (add-to-list 'write-file-functions 'untabify-current-buffer)
+;;   (add-to-list 'write-file-functions 'delete-trailing-whitespace))
+;; /
 
 ;; org-mode configure
 (require 'org)
@@ -145,10 +156,12 @@
           (lambda() (define-key org-mode-map (kbd "<f7>") 'org-insert-heading)))
 
 
-(add-hook 'c++-mode-hook 'my:space-format-hook)
-(add-hook 'c-mode-hook 'my:space-format-hook)
-(add-hook 'lisp-mode-hook 'my:space-format-hook)
-(add-hook 'emacs-lisp-mode-hook 'my:space-format-hook)
+;; 21-12-2015
+;; (add-hook 'c++-mode-hook 'my:space-format-hook)
+;; (add-hook 'c-mode-hook 'my:space-format-hook)
+;; (add-hook 'lisp-mode-hook 'my:space-format-hook)
+;; (add-hook 'emacs-lisp-mode-hook 'my:space-format-hook)
+;; /
 
 (setq-default truncate-lines 1)
 
@@ -223,6 +236,8 @@
 (setq projectile-switch-project-action 'helm-projectile)
 
 (setq projectile-tags-command "/usr/local/bin/exctags -Re -f \"%s\" %s")
+;; stop caching
+;; (setq projectile-enable-caching nil)
 
 ;;(load "setup-helm.el")
 (require 'helm-config)
@@ -306,8 +321,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(dired-directory ((t (:foreground "color-148" :weight semi-bold))))
- '(eshell-ls-directory ((t (:inherit font-lock-function-name-face))))
+ '(dired-directory ((t (:foreground "color-142" :weight normal))))
+ '(eshell-ls-directory ((t (:foreground "color-142" :weight normal))))
  '(font-lock-builtin-face ((t (:foreground "color-142"))))
  '(font-lock-constant-face ((t (:foreground "color-100"))))
  '(font-lock-function-name-face ((t (:inherit font-lock-builtin-face))))
