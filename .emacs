@@ -74,6 +74,8 @@
 (setq ido-virtual-buffer t)
 (setq ido-enable-flex-matching t)
 
+;;(global-set-key (kbd "M-x") 'ido-all-completions)
+
 ;; Syntax highlighting
 (require 'font-lock)
 (global-font-lock-mode t)
@@ -176,39 +178,77 @@
 (require 'yasnippet)
 (yas-global-mode 1)
 
-
-(require 'irony)
-;; Setups irony-mode
-(add-hook 'c++-mode-hook 'irony-mode)
-(add-hook 'c-mode-hook 'irony-mode)
-(add-hook 'objc-mode-hook 'irony-mode)
-
-(defun my-irony-mode-hook ()
-  (define-key irony-mode-map [remap completion-at-point]
-    'irony-completion-at-point-async)
-  (define-key irony-mode-map [remap complete-symbol]
-    'irony-completion-at-point-async))
-(add-hook 'irony-mode-hook 'my-irony-mode-hook)
-(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-
 ;; setups company-mode
+(add-to-list 'load-path "/home/rhexo/.emacs.d/company-mode")
 (require 'company)
+
 (add-hook 'after-init-hook 'global-company-mode)
 
-;; Has a bug : variable void reference for irony--working-directory
-;; (add-to-list 'load-path "/home/rhexo/.emacs.d/company-irony-c-headers")
-;; (require 'company-irony-c-headers)
-
-;; setups company-irony
-(eval-after-load 'company
-  '(add-to-list 'company-backends 'company-irony))
-;; (eval-after-load 'company
-;;   '(add-to-list 'company-backends '(company-irony-c-headers company-irony)))
+;;(setq company-backends (delete 'company-semantic company-backends))
+;;(setq company-backends (delete 'company-clang company-backends))
 
 (add-hook 'c-mode-hook
-          (lambda() (define-key c-mode-map (kbd "C-c TAB") 'irony-completion-at-point-async)))
+          (lambda() (define-key c-mode-map (kbd "C-c TAB") 'company-complete)))
 (add-hook 'c++-mode-hook
-          (lambda() (define-key c++-mode-map (kbd "C-c TAB") 'irony-completion-at-point-async)))
+          (lambda() (define-key c++-mode-map (kbd "C-c TAB") 'company-complete)))
+
+;; ;; by default include path
+;; (setq company-clang-arguments '("-std=c++11"
+;;                                 "-I./include"
+;;                                 "-I/usr/include/c++/v1"
+;;                                 "-I/usr/include/c++/4.2"
+;;                                 "-I/usr/local/include"
+;;                                 "-I/usr/local/include/boost"
+;;                                 "-I/usr/local/include/mpl"
+;;                                 "-I/usr/local/include/asio"
+;;                                 ))
+
+;; .dir-locals.el content
+;; ((c++-mode . ((eval . (let ((clang-args '("-std=c++11"
+;;                                           "-I/usr/include/c++/v1"
+;;                                           "-I/usr/include/c++/4.2"
+;;                                           "-I/usr/local/include"
+;;                                           "-I/usr/local/include/boost"
+;;                                           "-I/usr/local/include/mpl"
+;;                                           "-I/usr/local/include/asio"
+;;                                           "-I./include")))
+;;                             (setq company-clang-arguments clang-args))))))
+
+
+
+;; ;; 22-12-2015
+;; (require 'irony)
+;; ;; Setups irony-mode
+;; (add-hook 'c++-mode-hook 'irony-mode)
+;; (add-hook 'c-mode-hook 'irony-mode)
+;; (add-hook 'objc-mode-hook 'irony-mode)
+
+;; (defun my-irony-mode-hook ()
+;;   (define-key irony-mode-map [remap completion-at-point]
+;;     'irony-completion-at-point-async)
+;;   (define-key irony-mode-map [remap complete-symbol]
+;;     'irony-completion-at-point-async))
+;; (add-hook 'irony-mode-hook 'my-irony-mode-hook)
+;; (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+
+;; ;; Has a bug : variable void reference for irony--working-directory
+;; ;; (add-to-list 'load-path "/home/rhexo/.emacs.d/company-irony-c-headers")
+;; ;; (require 'company-irony-c-headers)
+
+;; ;; setups company-irony
+;; (eval-after-load 'company
+;;   '(add-to-list 'company-backends 'company-irony))
+;; ;; (eval-after-load 'company
+;; ;;   '(add-to-list 'company-backends '(company-irony-c-headers company-irony)))
+
+;; (add-hook 'c-mode-hook
+;;           (lambda() (define-key c-mode-map (kbd "C-c TAB") 'irony-completion-at-point-async)))
+;; (add-hook 'c++-mode-hook
+;;           (lambda() (define-key c++-mode-map (kbd "C-c TAB") 'irony-completion-at-point-async)))
+
+;; ;; add c++11 support for irony-mode (by default)
+;; (setq irony-additional-clang-options '("-std=c++11"))
+
 
 ;; Bookmarks settings
 (require 'bookmark)
@@ -229,13 +269,51 @@
 (require 'projectile)
 (projectile-global-mode)
 
+;; (setq helm-projectile-fuzzy-match nil)
+;; (setq projectile-regenerate-tags ')
+
+
+
 (require 'helm-projectile)
 (setq projectile-completion-system 'helm)
 (helm-projectile-on)
 
 (setq projectile-switch-project-action 'helm-projectile)
 
-(setq projectile-tags-command "/usr/local/bin/exctags -Re -f \"%s\" %s")
+(setq projectile-tags-command "/usr/local/bin/exctags -Re -f \"%s\" %s %s")
+
+(add-to-list 'load-path "/home/rhexo/.emacs.d/tags-smoothie")
+(require 'tags-smoothie)
+
+;; sets search directories for system includes (see defaults in tags-smoothie.el)
+(setq tags-smoothie-search-path
+      '("/usr/include/"                    ;; system/include support
+        "/usr/local/include/"              ;; local/include support
+        "/usr/include/c++/v1/"))           ;; c++ support
+
+;; project directories that will be excluded from overview (see defaults in tags-smoothie.el)
+(setq tags-smoothie-cpp-dir-to-exclude '("/build" "/bin"))
+
+;; redefinition of projectile regeneration tags procedure
+(defun projectile-regenerate-tags ()
+  "Regenerate the project's [e|g]tags. Override function"
+  (interactive)
+  (let* ((project-root (projectile-project-root))
+         (tags-exclude (projectile-tags-exclude-patterns))
+         (default-directory project-root)
+         (tags-file (expand-file-name projectile-tags-file-name))
+         (tags-includes (tags-smoothie-get-files-stream project-root))
+         (command (format projectile-tags-command tags-file tags-includes tags-exclude))
+         shell-output exit-code)
+    (with-temp-buffer
+      (setq exit-code
+            (call-process-shell-command command nil (current-buffer))
+            shell-output (projectile-trim-string
+                          (buffer-substring (point-min) (point-max)))))
+    (unless (zerop exit-code)
+      (error shell-output))
+    (visit-tags-table tags-file)))
+
 ;; stop caching
 ;; (setq projectile-enable-caching nil)
 
@@ -243,7 +321,7 @@
 (require 'helm-config)
 ;; (require 'helm-gtags)
 
-(global-set-key (kbd "C-M-x") 'helm-M-x)
+(global-set-key (kbd "M-x") 'helm-M-x)
 
 ;; (setq
 ;;  helm-gtags-ignore-case t
@@ -299,13 +377,28 @@
           (lambda() (define-key c++-mode-map (kbd "C-c m") 'cmake-project-configure-project)))
 
 
+;; (require 'semantic)
+;; (semantic-mode 1)
+;; (global-semanticdb-minor-mode 1)
+;; (global-semantic-idle-scheduler-mode 1)
+
+;; ;; adds some includes
+;; (semantic-add-system-include "/usr/local/include" 'c++-mode)
+;; (semantic-add-system-include "/usr/local/include/boost" 'c++-mode)
+;; (semantic-add-system-include "/usr/local/include/boost/mpl" 'c++-mode)
+;; (semantic-add-system-include "/usr/local/include/boost/asio" 'c++-mode)
+;; (semantic-add-system-include "/usr/include/c++/v1" 'c++-mode)
+;; (semantic-add-system-include "/usr/include/c++/4.2" 'c++-mode)
+
+;; ;; fast jump to header definition 
+;; (global-set-key (kbd "C-c i g") 'semantic-ia-fast-jump)
+;; (global-set-key (kbd "C-c i c") 'semantic-ia-describe-class)
+
 ;; Disable backup/autosave files
 (setq make-backup-file nil)
 (setq auto-save-default nil)
 (setq auto-save-list-file-name nil)
 (setq backup-directory-alist '((".*" . "~/.Trash")))
-
-
 
 ;; js-mode
 ;;(add-to-list 'load-path "/home/rhexo/.emacs.d/js3-mode")
@@ -315,7 +408,11 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(company-backends
+   (quote
+    (company-bbdb company-nxml company-css company-eclim company-xcode company-ropemacs company-cmake company-capf
+                  (company-dabbrev-code company-gtags company-etags company-keywords)
+                  company-oddmuse company-files company-dabbrev))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
