@@ -280,7 +280,7 @@
 
 (setq projectile-switch-project-action 'helm-projectile)
 
-(setq projectile-tags-command "/usr/local/bin/exctags -Re -f \"%s\" %s %s")
+(setq projectile-tags-command "/usr/local/bin/exctags -Re -f \"%s\" --language-force=c++ %s %s")
 
 (add-to-list 'load-path "/home/rhexo/.emacs.d/tags-smoothie")
 (require 'tags-smoothie)
@@ -399,6 +399,8 @@
 (setq auto-save-default nil)
 (setq auto-save-list-file-name nil)
 (setq backup-directory-alist '((".*" . "~/.Trash")))
+
+(global-set-key (kbd "M-C-w") 'kill-region)
 
 ;; js-mode
 ;;(add-to-list 'load-path "/home/rhexo/.emacs.d/js3-mode")
