@@ -9,6 +9,12 @@
 (setq user-full-name "%user-name%")
 (setq user-mail-address "%user-mail%")
 
+;; (add-to-list 'load-path "/home/rhexo/.emacs.d/badger-theme")
+;; (add-to-list 'load-path "/home/rhexo/.emacs.d/colorsarenice-theme")
+;; ;; load-theme
+;; (load-theme 'wombat t)
+;; (require 'colorsarenice-dark-theme)
+
 ;; Dired
 (require 'dired)
 (setq dired-recursive-deletes 'top)
@@ -99,6 +105,9 @@
 ;; Short messages
 (defalias 'yes-or-no-p 'y-or-n-p)
 
+;; Clipboard settings
+;; (setq x-select-enable-clipboard t)
+
 ;; End of file newlines
 (setq require-final-newline t) ;; Добавить новую пустую строку в конце файла
 (setq next-line-add-newlines nil) ;; Не добавлять новую строку при смещении курсора
@@ -110,6 +119,22 @@
 ;; Easy transition between buffer: M-arrow-keys
 (if (equal nil (equal major-mode 'org-mode))
     (windmove-default-keybindings 'meta))
+
+
+;;21-12-2015
+;; Delete trailing whitespaces, format buffer and untabify when save buffer
+;; (defun format-current-buffer()
+;;   (indent-region (point-min)(point-max)))
+;; (defun untabify-current-buffer()
+;;   (if (not indent-tabs-mode)
+;;       (untabify (point-min)(point-max)))
+;;   nil)
+
+;; (defun my:space-format-hook()
+;;   (add-to-list 'write-file-functions 'format-current-buffer)
+;;   (add-to-list 'write-file-functions 'untabify-current-buffer)
+;;   (add-to-list 'write-file-functions 'delete-trailing-whitespace))
+;; /
 
 ;; org-mode configure
 (require 'org)
@@ -132,6 +157,14 @@
 (add-hook 'org-mode-hook
           (lambda() (define-key org-mode-map (kbd "<f7>") 'org-insert-heading)))
 
+
+;; 21-12-2015
+;; (add-hook 'c++-mode-hook 'my:space-format-hook)
+;; (add-hook 'c-mode-hook 'my:space-format-hook)
+;; (add-hook 'lisp-mode-hook 'my:space-format-hook)
+;; (add-hook 'emacs-lisp-mode-hook 'my:space-format-hook)
+;; /
+
 (setq-default truncate-lines 1)
 
 ;; .h as .hpp.open in c++ mdoe.
@@ -141,6 +174,25 @@
 (add-hook 'find-file-hooks
           '(lambda ()
              (setq mode-line-buffer-identification 'buffer-file-truename)))
+
+(require 'yasnippet)
+(yas-global-mode 1)
+
+;; setups company-mode
+(add-to-list 'load-path "/home/rhexo/.emacs.d/company-mode")
+(require 'company)
+
+(add-hook 'after-init-hook 'global-company-mode)
+
+(setq company-backends (delete 'company-semantic company-backends))
+(setq company-backends (delete 'company-clang company-backends))
+
+(add-hook 'c-mode-hook
+          (lambda() (define-key c-mode-map (kbd "C-c TAB") 'company-complete)))
+(add-hook 'c++-mode-hook
+          (lambda() (define-key c++-mode-map (kbd "C-c TAB") 'company-complete)))
+
+
 
 ;; Bookmarks settings
 (require 'bookmark)
@@ -205,18 +257,28 @@
       (error shell-output))
     (visit-tags-table tags-file)))
 
+;; stop caching
+;; (setq projectile-enable-caching nil)
+
+;;(load "setup-helm.el")
 (require 'helm-config)
 ;; (require 'helm-gtags)
 
 (global-set-key (kbd "M-x") 'helm-M-x)
 
-;; ack ignored files
-;;(setq projectile-ignore-patterns '("TAGS" "*.txt"))
+;; (setq
+;;  helm-gtags-ignore-case t
+;;  helm-gtags-auto-update t
+;;  helm-gtags-use-input-at-cursor t
+;;  helm-gtags-pulse-at-cursor t
+;;  helm-gtags-prefix-key "\C-cg"
+;;  helm-gtags-suggested-key-mapping t
+;;  helm-gtags-path-style 'relative)
 
-;; (setq projectile-globally-ignored-files 
-;;       (append
-;;        projectile-globally-ignored-files  
-;;        '("TAGS" "*.txt" ".gitignore" ".gitmodules")))
+;; (add-hook 'c-mode-hook 'helm-gtags-mode)
+;; (add-hook 'c++-mode-hook 'helm-gtags-mode)
+;; (add-hook 'asm-mode-hook 'helm-gtags-mode)
+
 
 ;;Настраиваем  cmake-project-mode
 
@@ -241,6 +303,10 @@
        '(("\\.cmake\\'" . cmake-mode))
        auto-mode-alist))
 
+;; setup cmake-ide
+;; (cmake-ide-setup)
+;; (setq cmake-ide-dir "/build")
+
 
 (require 'compile)
 (require 'cc-mode)
@@ -254,13 +320,45 @@
           (lambda() (define-key c++-mode-map (kbd "C-c m") 'cmake-project-configure-project)))
 
 
+;; (require 'semantic)
+;; (semantic-mode 1)
+;; (global-semanticdb-minor-mode 1)
+;; (global-semantic-idle-scheduler-mode 1)
+
+;; ;; adds some includes
+;; (semantic-add-system-include "/usr/local/include" 'c++-mode)
+;; (semantic-add-system-include "/usr/local/include/boost" 'c++-mode)
+;; (semantic-add-system-include "/usr/local/include/boost/mpl" 'c++-mode)
+;; (semantic-add-system-include "/usr/local/include/boost/asio" 'c++-mode)
+;; (semantic-add-system-include "/usr/include/c++/v1" 'c++-mode)
+;; (semantic-add-system-include "/usr/include/c++/4.2" 'c++-mode)
+
+;; ;; fast jump to header definition 
+;; (global-set-key (kbd "C-c i g") 'semantic-ia-fast-jump)
+;; (global-set-key (kbd "C-c i c") 'semantic-ia-describe-class)
+
 ;; Disable backup/autosave files
-(setq make-backup-file t)
-(setq auto-save-default t)
-(setq auto-save-list-file-name t)
+(setq make-backup-file nil)
+(setq auto-save-default nil)
+(setq auto-save-list-file-name nil)
 (setq backup-directory-alist '((".*" . "~/.Trash")))
 
 (global-set-key (kbd "M-C-w") 'kill-region)
+
+;; js-mode
+;;(add-to-list 'load-path "/home/rhexo/.emacs.d/js3-mode")
+
+;;(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+
+ ;; '(company-backends
+ ;;   (quote
+ ;;    (company-bbdb company-nxml company-css company-eclim company-xcode company-ropemacs company-cmake company-capf
+ ;;                  (company-dabbrev-code company-gtags company-etags company-keywords)
+ ;;                  company-oddmuse company-files company-dabbrev))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
