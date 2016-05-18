@@ -210,16 +210,7 @@
 
 (global-set-key (kbd "M-x") 'helm-M-x)
 
-;; ack ignored files
-;;(setq projectile-ignore-patterns '("TAGS" "*.txt"))
-
-;; (setq projectile-globally-ignored-files 
-;;       (append
-;;        projectile-globally-ignored-files  
-;;        '("TAGS" "*.txt" ".gitignore" ".gitmodules")))
-
 ;;Настраиваем  cmake-project-mode
-
 (add-to-list 'load-path "/home/rhexo/.emacs.d/emacs-cmake-project")
 (require 'cmake-project)
 
