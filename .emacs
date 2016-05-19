@@ -147,10 +147,13 @@
 (setq bookmark-save-flag t) ;; автоматически сохранять закладки в файл
 (when (file-exists-p (concat user-emacs-directory "bookmarks"))
   (bookmark-load bookmark-default-file t)) ;; попытаться найти и открыть файл с закладками
-(global-set-key (kbd "<f3>") 'bookmark-set) ;; создать закладку
-(global-set-key (kbd "<f4>") 'bookmark-jump) ;; прыгнуть на закладку по F4
+(global-set-key (kbd "<f7>") 'bookmark-set) ;; создать закладку
+(global-set-key (kbd "<f8>") 'bookmark-jump) ;; прыгнуть на закладку по F4
 (global-set-key (kbd "<f5>") 'bookmark-bmenu-list) ;; открыть список закладок
 (setq bookmark-default-file (concat user-emacs-directory "bookmarks")) ;; хранить закадки в файле bookmarks
+
+;; some buffer futures
+(global-set-key (kbd "<f4>") 'previous-buffer) ;; display previous buffer at F4
 
 ;; install from github repo
 ;; git clone https://github/bbatsov/projectile.git
@@ -171,7 +174,8 @@
 
 (setq projectile-switch-project-action 'helm-projectile)
 
-(setq projectile-tags-command "/usr/local/bin/exctags -Re -f \"%s\" --language-force=c++ %s %s")
+;;(setq projectile-tags-command "/usr/local/bin/exctags -Re -f \"%s\" --language-force=c++ --extra=+fq --c-kinds=+l  %s %s")
+(setq projectile-tags-command "/usr/local/bin/exctags -Re -f \"%s\" --language-force=c++ --format=2 --c-kinds=+pxl-d --extra=+f %s %s")
 
 (add-to-list 'load-path "/home/rhexo/.emacs.d/tags-smoothie")
 (require 'tags-smoothie)
@@ -206,7 +210,7 @@
     (visit-tags-table tags-file)))
 
 (require 'helm-config)
-;; (require 'helm-gtags)
+(require 'helm-tags)
 
 (global-set-key (kbd "M-x") 'helm-M-x)
 
@@ -260,6 +264,7 @@
  ;; If there is more than one, they won't work right.
  '(custom-variable-tag ((t (:foreground "color-243" :weight bold))))
  '(dired-directory ((t (:foreground "color-142" :weight normal))))
+ '(ebrowse-root-class ((t (:foreground "color-68" :weight bold))))
  '(eshell-ls-directory ((t (:foreground "color-142" :weight normal))))
  '(eshell-prompt ((t (:foreground "color-142" :weight bold :height 0.6))))
  '(font-lock-builtin-face ((t (:foreground "color-142"))))
@@ -283,3 +288,9 @@
  '(outline-3 ((t (:foreground "color-142"))))
  '(outline-4 ((t (:foreground "color-144"))))
  '(region ((t (:background "color-237")))))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
