@@ -253,6 +253,8 @@
        auto-mode-alist))
 
 
+(ac-config-default)
+
 (require 'compile)
 (require 'cc-mode)
 ;; Binding compile futures
