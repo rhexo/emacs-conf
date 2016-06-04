@@ -189,7 +189,7 @@
 (define-key global-map (kbd "C-c o") 'iedit-mode)
 ;; C++ futures
 ;; redefinition of projectile regeneration tags procedure
-(defun my-projectile-regenerate-tags ()
+(defun projectile-regenerate-tags ()
   "Regenerate the project's [e|g]tags. Override function"
   (interactive)
   (let* ((project-root (projectile-project-root))
@@ -217,12 +217,8 @@
         "/usr/local/include/"              ;; local/include support
         "/usr/include/c++/v1/"))           ;; c++ support
 ;; project directories that will be excluded from overview (see defaults in tags-smoothie.el)
-  (setq tags-smoothie-cpp-dir-to-exclude '("/build" "/bin"))
-  (setq projectile-regenerate-tags 'my-projectile-regenerate-tags))
-
-(add-hook 'c++-mode-hook 'my-c++-mode-hook)
-(add-hook 'c-mode-hook 'my-c++-mode-hook)
-
+  (setq tags-smoothie-cpp-dir-to-exclude '("/build" "/bin")))
+;;  (setq projectile-regenerate-tags 'my-projectile-regenerate-tags)
 
 ;; python futures
 (defun my-python-mode-hook ()
@@ -262,9 +258,13 @@
 (require 'cc-mode)
 ;; Binding compile futures
 (add-hook 'c-mode-hook
-          (lambda() (define-key c-mode-map (kbd "C-c c") 'compile)))
+          (lambda() (define-key c-mode-map (kbd "C-c C-c") 'compile)))
 (add-hook 'c++-mode-hook
-          (lambda() (define-key c++-mode-map (kbd "C-c c") 'compile)))
+          (lambda() (define-key c++-mode-map (kbd "C-c C-c") 'compile)))
+
+(add-hook 'c++-mode-hook 'my-c++-mode-hook)
+(add-hook 'c-mode-hook 'my-c++-mode-hook)
+
 ;; cmake-project
 (add-hook 'c++-mode-hook
           (lambda() (define-key c++-mode-map (kbd "C-c m") 'cmake-project-configure-project)))
