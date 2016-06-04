@@ -159,7 +159,7 @@
 ;; git clone https://github/bbatsov/projectile.git
 ;;
 ;; projectile setup
-(add-to-list 'load-path "/home/rhexo/.emacs.d/projectile")
+(add-to-list 'load-path "~/.emacs.d/projectile")
 
 (require 'projectile)
 (projectile-global-mode)
@@ -167,30 +167,28 @@
 ;; (setq helm-projectile-fuzzy-match nil)
 ;; (setq projectile-regenerate-tags ')
 
-(add-to-list 'load-path "/home/rhexo/.emacs.d/helm-projectile")
+(add-to-list 'load-path "~/.emacs.d/helm-projectile")
 (require 'helm-projectile)
 (setq projectile-completion-system 'helm)
 (helm-projectile-on)
 
 (setq projectile-switch-project-action 'helm-projectile)
 
-;;(setq projectile-tags-command "/usr/local/bin/exctags -Re -f \"%s\" --language-force=c++ --extra=+fq --c-kinds=+l  %s %s")
-(setq projectile-tags-command "/usr/local/bin/exctags -Re -f \"%s\" --language-force=c++ --format=2 --c-kinds=+pxl-d --extra=+fq %s %s")
-
-(add-to-list 'load-path "/home/rhexo/.emacs.d/tags-smoothie")
+(add-to-list 'load-path "~/.emacs.d/tags-smoothie")
 (require 'tags-smoothie)
 
-;; sets search directories for system includes (see defaults in tags-smoothie.el)
-(setq tags-smoothie-search-path
-      '("/usr/include/"                    ;; system/include support
-        "/usr/local/include/"              ;; local/include support
-        "/usr/include/c++/v1/"))           ;; c++ support
+(require 'json)
 
-;; project directories that will be excluded from overview (see defaults in tags-smoothie.el)
-(setq tags-smoothie-cpp-dir-to-exclude '("/build" "/bin"))
+;; activate elpy
+(elpy-enable)
 
+;; Fixing a key binding bug in elpy
+(define-key yas-minor-mode-map (kbd "C-c k") 'yas-expand)
+;; Fixing another key binfing bug in iedit mode
+(define-key global-map (kbd "C-c o") 'iedit-mode)
+;; C++ futures
 ;; redefinition of projectile regeneration tags procedure
-(defun projectile-regenerate-tags ()
+(defun my-projectile-regenerate-tags ()
   "Regenerate the project's [e|g]tags. Override function"
   (interactive)
   (let* ((project-root (projectile-project-root))
@@ -209,13 +207,35 @@
       (error shell-output))
     (visit-tags-table tags-file)))
 
+
+(defun my-c++-mode-hook ()
+  (setq projectile-tags-command "/usr/local/bin/exctags -Re -f \"%s\" --language-force=c++ --format=2 --c-kinds=+pxl-d --extra=+f %s %s")
+;; sets search directories for system includes (see defaults in tags-smoothie.el)
+  (setq tags-smoothie-search-path
+      '("/usr/include/"                    ;; system/include support
+        "/usr/local/include/"              ;; local/include support
+        "/usr/include/c++/v1/"))           ;; c++ support
+;; project directories that will be excluded from overview (see defaults in tags-smoothie.el)
+  (setq tags-smoothie-cpp-dir-to-exclude '("/build" "/bin"))
+  (setq projectile-regenerate-tags 'my-projectile-regenerate-tags))
+
+(add-hook 'c++-mode-hook 'my-c++-mode-hook)
+(add-hook 'c-mode-hook 'my-c++-mode-hook)
+
+
+;; python futures
+(defun my-python-mode-hook ()
+  (highlight-indentation-mode 0))
+
+(add-hook 'python-mode-hook 'my-python-mode-hook)
+
 (require 'helm-config)
 (require 'helm-tags)
 
 (global-set-key (kbd "M-x") 'helm-M-x)
 
 ;;Настраиваем  cmake-project-mode
-(add-to-list 'load-path "/home/rhexo/.emacs.d/emacs-cmake-project")
+(add-to-list 'load-path "~/.emacs.d/emacs-cmake-project")
 (require 'cmake-project)
 
 (defun maybe-cmake-project-hook ()
@@ -228,7 +248,7 @@
 (setq cmake-project-default-build-dir-name "build/")
 
 ;; Enable cmake mode (syntax highlite for CMakeLists.txt)
-(autoload 'cmake-mode "/home/rhexo/.emacs.d/cmake-mode.el" t)
+(autoload 'cmake-mode "~/.emacs.d/cmake-mode.el" t)
 
 (setq auto-mode-alist
       (append
@@ -262,6 +282,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(default ((t (:background nil))))
  '(custom-variable-tag ((t (:foreground "color-243" :weight bold))))
  '(dired-directory ((t (:foreground "color-142" :weight normal))))
  '(ebrowse-root-class ((t (:foreground "color-68" :weight bold))))
@@ -293,4 +314,4 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(elpy-modules (quote (elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv elpy-module-highlight-indentation elpy-module-yasnippet elpy-module-sane-defaults))))
