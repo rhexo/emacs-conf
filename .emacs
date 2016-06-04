@@ -175,7 +175,7 @@
 (setq projectile-switch-project-action 'helm-projectile)
 
 ;;(setq projectile-tags-command "/usr/local/bin/exctags -Re -f \"%s\" --language-force=c++ --extra=+fq --c-kinds=+l  %s %s")
-(setq projectile-tags-command "/usr/local/bin/exctags -Re -f \"%s\" --language-force=c++ --format=2 --c-kinds=+pxl-d --extra=+f %s %s")
+(setq projectile-tags-command "/usr/local/bin/exctags -Re -f \"%s\" --language-force=c++ --format=2 --c-kinds=+pxl-d --extra=+fq %s %s")
 
 (add-to-list 'load-path "/home/rhexo/.emacs.d/tags-smoothie")
 (require 'tags-smoothie)
