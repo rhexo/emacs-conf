@@ -1,9 +1,12 @@
-;; Начало инициализации
+;; п²п╟я┤п╟п╩п╬ п╦п╫п╦я├п╦п╟п╩п╦п╥п╟я├п╦п╦
 (when (>= emacs-major-version 24)
   (require 'package)
   (add-to-list 'package-archives
-               '("melpa-stable" . "http://stable.melpa.org/packages/") t)
+               '("melpa-stable" . "http://stable.melpa.org/packages/") t)  
+  (add-to-list 'package-archives
+               '("elpy" . "https://jorgenschaefer.github.io/packages/") t)  
   (package-initialize))
+
 
 ;; My name and email
 (setq user-full-name "%user-name%")
@@ -17,18 +20,18 @@
 ;; Imenu
 (require 'imenu)
 (setq imenu-auto-rescan t)
-(setq imenu-use-popup-menu nil) ;; Диалоги imenu в минибуфере
+(setq imenu-use-popup-menu nil) ;; п■п╦п╟п╩п╬пЁп╦ imenu п╡ п╪п╦п╫п╦п╠я┐я└п╣я─п╣
 
 ;; Display the name of the current buffer in the title bar
 (setq frame-title-format "GNU Emacs: %b")
 
 ;; Show-paren-mode settings
-(show-paren-mode t) ;; Включить выделения выражений между {}, [], ()
-;;(setq show-paren-style 'expression) ;; Выделить цветом выражения между {}, [], ()
+(show-paren-mode t) ;; п▓п╨п╩я▌я┤п╦я┌я▄ п╡я▀п╢п╣п╩п╣п╫п╦я▐ п╡я▀я─п╟п╤п╣п╫п╦п╧ п╪п╣п╤п╢я┐ {}, [], ()
+;;(setq show-paren-style 'expression) ;; п▓я▀п╢п╣п╩п╦я┌я▄ я├п╡п╣я┌п╬п╪ п╡я▀я─п╟п╤п╣п╫п╦я▐ п╪п╣п╤п╢я┐ {}, [], ()
 
 ;; Electric-modes settings
-(electric-pair-mode 1) ;; Автозакрытие {}, [], () с переводом курсора внутрь скобок
-(electric-indent-mode -1) ;; Отключить индентацию (default in Emacs-24.4)
+(electric-pair-mode 1) ;; п░п╡я┌п╬п╥п╟п╨я─я▀я┌п╦п╣ {}, [], () я│ п©п╣я─п╣п╡п╬п╢п╬п╪ п╨я┐я─я│п╬я─п╟ п╡п╫я┐я┌я─я▄ я│п╨п╬п╠п╬п╨
+(electric-indent-mode -1) ;; п·я┌п╨п╩я▌я┤п╦я┌я▄ п╦п╫п╢п╣п╫я┌п╟я├п╦я▌ (default in Emacs-24.4)
 
 ;; Delete selection
 (delete-selection-mode t)
@@ -43,21 +46,26 @@
 ;; Linum plugin
 (require 'linum)
 (line-number-mode t)
-(global-linum-mode t)
-(column-number-mode t)
+;; (global-linum-mode t)
+;; (column-number-mode t)
 (setq linum-format "  %d ")
 
+(add-hook 'c++-mode-hook '(lambda () (linum-on)))
+(add-hook 'c-mode-hook '(lambda () (linum-on)))
+(add-hook 'elisp-mode-hook '(lambda () (linum-on)))
+(add-hook 'python-mode-hook '(lambda () (linum-on)))
+
 ;; Fringe settings
-(setq-default indicate-empty-lines t)  ;; Отсутствие строки выделить глифами рядом с полоской с номером строки
-(setq-default indicate-buffer-boundaries 'left) ;; Индикация только слева
+(setq-default indicate-empty-lines t)  ;; п·я┌я│я┐я┌я│я┌п╡п╦п╣ я│я┌я─п╬п╨п╦ п╡я▀п╢п╣п╩п╦я┌я▄ пЁп╩п╦я└п╟п╪п╦ я─я▐п╢п╬п╪ я│ п©п╬п╩п╬я│п╨п╬п╧ я│ п╫п╬п╪п╣я─п╬п╪ я│я┌я─п╬п╨п╦
+(setq-default indicate-buffer-boundaries 'left) ;; п≤п╫п╢п╦п╨п╟я├п╦я▐ я┌п╬п╩я▄п╨п╬ я│п╩п╣п╡п╟
 
 ;; Display file size/time in mode line
-(setq display-time-24hr-format t) ;; 24-часовой временной формат в mode-line
-(display-time-mode t) ;; показывать часы в mode-line
-(size-indication-mode t) ;; размер файла в процентах
+(setq display-time-24hr-format t) ;; 24-я┤п╟я│п╬п╡п╬п╧ п╡я─п╣п╪п╣п╫п╫п╬п╧ я└п╬я─п╪п╟я┌ п╡ mode-line
+(display-time-mode t) ;; п©п╬п╨п╟п╥я▀п╡п╟я┌я▄ я┤п╟я│я▀ п╡ mode-line
+(size-indication-mode t) ;; я─п╟п╥п╪п╣я─ я└п╟п╧п╩п╟ п╡ п©я─п╬я├п╣п╫я┌п╟я┘
 
 ;; Line wrapping
-(setq word-wrap t) ;; переносить по словам
+(setq word-wrap t) ;; п©п╣я─п╣п╫п╬я│п╦я┌я▄ п©п╬ я│п╩п╬п╡п╟п╪
 (global-visual-line-mode t)
 
 ;; IDO plugin
@@ -76,32 +84,36 @@
 (setq font-lock-maximum-decoration t)
 
 ;; Indent settings
-(setq-default indent-tabs-mode nil)  ;; Отключить возможность ставить отступы Tab-ом
+(setq-default indent-tabs-mode nil)  ;; п·я┌п╨п╩я▌я┤п╦я┌я▄ п╡п╬п╥п╪п╬п╤п╫п╬я│я┌я▄ я│я┌п╟п╡п╦я┌я▄ п╬я┌я│я┌я┐п©я▀ Tab-п╬п╪
 (setq-default tab-width 2)
 (setq-default c-basic-offset 2)
 (setq-default standard-indent 2)
 (setq-default lisp-body-indent 2)
-
+;; --------------------------------------------------------------------
 ;; 21-12-2015
 ;;(global-set-key (kbd "RET") 'newline-and-indent)
 ;; /
 
+;; ----
 (defun indent-buffer ()
   (interactive)
   (save-excursion
     (indent-region   (point-min) (point-max) nil)))
 (global-set-key [f12] 'indent-buffer)
-;;
+;; ----
 
+;; -----
 ;; Scrolling settings
-(setq scroll-step 4) ;; вверз вниз по одной строке
+(setq scroll-step 4) ;; п╡п╡п╣я─п╥ п╡п╫п╦п╥ п©п╬ п╬п╢п╫п╬п╧ я│я┌я─п╬п╨п╣
 
 ;; Short messages
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;; End of file newlines
-(setq require-final-newline t) ;; Добавить новую пустую строку в конце файла
-(setq next-line-add-newlines nil) ;; Не добавлять новую строку при смещении курсора
+;; ----
+;;(setq require-final-newline t) ;; п■п╬п╠п╟п╡п╦я┌я▄ п╫п╬п╡я┐я▌ п©я┐я│я┌я┐я▌ я│я┌я─п╬п╨я┐ п╡ п╨п╬п╫я├п╣ я└п╟п╧п╩п╟
+;;(setq next-line-add-newlines nil) ;; п²п╣ п╢п╬п╠п╟п╡п╩я▐я┌я▄ п╫п╬п╡я┐я▌ я│я┌я─п╬п╨я┐ п©я─п╦ я│п╪п╣я┴п╣п╫п╦п╦ п╨я┐я─я│п╬я─п╟
+;; ----
 
 ;; Highlight search results
 (setq search-highlight t)
@@ -126,8 +138,8 @@
 (setq org-replace-disputed-keys t)
 
 ;; agenda global files configure
-(setq org-agenda-files( list "~/ydisk/proj/websnap/websnap.blup.org"
-                             "~/ydisk/proj/app-lib/orgmode-instr.org"))
+;; (setq org-agenda-files( list "~/ydisk/proj/websnap/websnap.blup.org"
+;;                              "~/ydisk/proj/app-lib/orgmode-instr.org"))
 
 (add-hook 'org-mode-hook
           (lambda() (define-key org-mode-map (kbd "<f7>") 'org-insert-heading)))
@@ -137,20 +149,20 @@
 ;; .h as .hpp.open in c++ mdoe.
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
-;; Display full pathname for files
-(add-hook 'find-file-hooks
-          '(lambda ()
-             (setq mode-line-buffer-identification 'buffer-file-truename)))
+;; ;; Display full pathname for files
+;; (add-hook 'find-file-hooks
+;;           '(lambda ()
+;;              (setq mode-line-buffer-identification 'buffer-file-truename)))
 
 ;; Bookmarks settings
 (require 'bookmark)
-(setq bookmark-save-flag t) ;; автоматически сохранять закладки в файл
+(setq bookmark-save-flag t) ;; п╟п╡я┌п╬п╪п╟я┌п╦я┤п╣я│п╨п╦ я│п╬я┘я─п╟п╫я▐я┌я▄ п╥п╟п╨п╩п╟п╢п╨п╦ п╡ я└п╟п╧п╩
 (when (file-exists-p (concat user-emacs-directory "bookmarks"))
-  (bookmark-load bookmark-default-file t)) ;; попытаться найти и открыть файл с закладками
-(global-set-key (kbd "<f7>") 'bookmark-set) ;; создать закладку
-(global-set-key (kbd "<f8>") 'bookmark-jump) ;; прыгнуть на закладку по F4
-(global-set-key (kbd "<f5>") 'bookmark-bmenu-list) ;; открыть список закладок
-(setq bookmark-default-file (concat user-emacs-directory "bookmarks")) ;; хранить закадки в файле bookmarks
+  (bookmark-load bookmark-default-file t)) ;; п©п╬п©я▀я┌п╟я┌я▄я│я▐ п╫п╟п╧я┌п╦ п╦ п╬я┌п╨я─я▀я┌я▄ я└п╟п╧п╩ я│ п╥п╟п╨п╩п╟п╢п╨п╟п╪п╦
+(global-set-key (kbd "<f7>") 'bookmark-set) ;; я│п╬п╥п╢п╟я┌я▄ п╥п╟п╨п╩п╟п╢п╨я┐
+(global-set-key (kbd "<f8>") 'bookmark-jump) ;; п©я─я▀пЁп╫я┐я┌я▄ п╫п╟ п╥п╟п╨п╩п╟п╢п╨я┐ п©п╬ F4
+(global-set-key (kbd "<f5>") 'bookmark-bmenu-list) ;; п╬я┌п╨я─я▀я┌я▄ я│п©п╦я│п╬п╨ п╥п╟п╨п╩п╟п╢п╬п╨
+(setq bookmark-default-file (concat user-emacs-directory "bookmarks")) ;; я┘я─п╟п╫п╦я┌я▄ п╥п╟п╨п╟п╢п╨п╦ п╡ я└п╟п╧п╩п╣ bookmarks
 
 ;; some buffer futures
 (global-set-key (kbd "<f4>") 'previous-buffer) ;; display previous buffer at F4
@@ -158,11 +170,16 @@
 ;; install from github repo
 ;; git clone https://github/bbatsov/projectile.git
 ;;
+
 ;; projectile setup
 (add-to-list 'load-path "~/.emacs.d/projectile")
 
 (require 'projectile)
 (projectile-global-mode)
+
+(add-to-list 'load-path "~/.emacs.d/helm")
+(require 'helm-config)
+(require 'helm-tags)
 
 ;; (setq helm-projectile-fuzzy-match nil)
 ;; (setq projectile-regenerate-tags ')
@@ -180,15 +197,18 @@
 (require 'json)
 
 ;; activate elpy
+
+
 (elpy-enable)
 
 ;; Fixing a key binding bug in elpy
 (define-key yas-minor-mode-map (kbd "C-c k") 'yas-expand)
 ;; Fixing another key binfing bug in iedit mode
 (define-key global-map (kbd "C-c o") 'iedit-mode)
+
 ;; C++ futures
 ;; redefinition of projectile regeneration tags procedure
-(defun my-projectile-regenerate-tags ()
+(defun projectile-regenerate-tags ()
   "Regenerate the project's [e|g]tags. Override function"
   (interactive)
   (let* ((project-root (projectile-project-root))
@@ -209,19 +229,16 @@
 
 
 (defun my-c++-mode-hook ()
-  (setq projectile-tags-command "/usr/local/bin/exctags -Re -f \"%s\" --language-force=c++ --format=2 --c-kinds=+pxl-d --extra=+f %s %s")
+;;  (setq projectile-tags-command "/usr/local/bin/exctags -Re -f \"%s\" --language-force=c++ --format=2 --c-kinds=+pxl-d --extra=+f %s %s")
+  (setq projectile-tags-command "/usr/local/bin/exctags -Re -f \"%s\" %s %s")
 ;; sets search directories for system includes (see defaults in tags-smoothie.el)
   (setq tags-smoothie-search-path
       '("/usr/include/"                    ;; system/include support
         "/usr/local/include/"              ;; local/include support
         "/usr/include/c++/v1/"))           ;; c++ support
 ;; project directories that will be excluded from overview (see defaults in tags-smoothie.el)
-  (setq tags-smoothie-cpp-dir-to-exclude '("/build" "/bin"))
-  (setq projectile-regenerate-tags 'my-projectile-regenerate-tags))
-
-(add-hook 'c++-mode-hook 'my-c++-mode-hook)
-(add-hook 'c-mode-hook 'my-c++-mode-hook)
-
+  (setq tags-smoothie-cpp-dir-to-exclude '("/build" "/bin")))
+;;  (setq projectile-regenerate-tags 'my-projectile-regenerate-tags)
 
 ;; python futures
 (defun my-python-mode-hook ()
@@ -229,12 +246,10 @@
 
 (add-hook 'python-mode-hook 'my-python-mode-hook)
 
-(require 'helm-config)
-(require 'helm-tags)
 
 (global-set-key (kbd "M-x") 'helm-M-x)
 
-;;Настраиваем  cmake-project-mode
+;;п²п╟я│я┌я─п╟п╦п╡п╟п╣п╪  cmake-project-mode
 (add-to-list 'load-path "~/.emacs.d/emacs-cmake-project")
 (require 'cmake-project)
 
@@ -248,7 +263,8 @@
 (setq cmake-project-default-build-dir-name "build/")
 
 ;; Enable cmake mode (syntax highlite for CMakeLists.txt)
-(autoload 'cmake-mode "~/.emacs.d/cmake-mode.el" t)
+(add-to-list 'load-path "~/.emacs.d/cmake-mode")
+(require 'cmake-mode)
 
 (setq auto-mode-alist
       (append
@@ -256,17 +272,24 @@
        '(("\\.cmake\\'" . cmake-mode))
        auto-mode-alist))
 
+;; (autoload 'cmake-mode "~/.emacs.d/cmake-mode.el" t)
+
+(ac-config-default)
 
 (require 'compile)
 (require 'cc-mode)
 ;; Binding compile futures
 (add-hook 'c-mode-hook
-          (lambda() (define-key c-mode-map (kbd "C-c c") 'compile)))
+          (lambda() (define-key c-mode-map (kbd "C-c C-c") 'compile)))
 (add-hook 'c++-mode-hook
-          (lambda() (define-key c++-mode-map (kbd "C-c c") 'compile)))
+          (lambda() (define-key c++-mode-map (kbd "C-c C-c") 'compile)))
+
+(add-hook 'c++-mode-hook 'my-c++-mode-hook)
+(add-hook 'c-mode-hook 'my-c++-mode-hook)
+
 ;; cmake-project
 (add-hook 'c++-mode-hook
-          (lambda() (define-key c++-mode-map (kbd "C-c m") 'cmake-project-configure-project)))
+          (lambda() (define-key c++-mode-map (kbd "C-c C-m") 'cmake-project-configure-project)))
 
 
 ;; Disable backup/autosave files
@@ -276,6 +299,7 @@
 (setq backup-directory-alist '((".*" . "~/.Trash")))
 
 (global-set-key (kbd "M-C-w") 'kill-region)
+
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -309,9 +333,9 @@
  '(outline-3 ((t (:foreground "color-142"))))
  '(outline-4 ((t (:foreground "color-144"))))
  '(region ((t (:background "color-237")))))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(elpy-modules (quote (elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv elpy-module-highlight-indentation elpy-module-yasnippet elpy-module-sane-defaults))))
+;; (custom-set-variables
+;;  ;; custom-set-variables was added by Custom.
+;;  ;; If you edit it by hand, you could mess it up, so be careful.
+;;  ;; Your init file should contain only one such instance.
+;;  ;; If there is more than one, they won't work right.
+;;  '(elpy-modules (quote (elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv elpy-module-highlight-indentation elpy-module-yasnippet elpy-module-sane-defaults))))
