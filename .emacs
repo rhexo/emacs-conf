@@ -123,7 +123,7 @@
 ;; (global-set-key "\C-cb" 'org-iswitchb)
 (setq org-log-done t)
 
-(setq org-replace-disputed-keys)
+(setq org-replace-disputed-keys t)
 
 ;; agenda global files configure
 (setq org-agenda-files( list "~/ydisk/proj/websnap/websnap.blup.org"
