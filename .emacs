@@ -31,14 +31,14 @@
 
 ;; Electric-modes settings
 (electric-pair-mode 1) ;; Автозакрытие {}, [], () с переводом курсора внутрь скобок
-(electric-indent-mode -1) ;; Отключить индентацию (default in Emacs-24.4)
+;;(electric-indent-mode -1) ;; Отключить индентацию (default in Emacs-24.4)
 
 ;; Delete selection
-(delete-selection-mode t)
+;;(delete-selection-mode t)
 
 ;; Disable GUI components
 (tooltip-mode -1)
-(menu-bar-mode -1)
+;;(menu-bar-mode -1)
 (tool-bar-mode -1)
 ;;(scroll-bar-mode -1)
 (blink-cursor-mode -1)
@@ -48,7 +48,7 @@
 (line-number-mode t)
 ;; (global-linum-mode t)
 ;; (column-number-mode t)
-(setq linum-format "  %d ")
+(setq linum-format " %d")
 
 (add-hook 'c++-mode-hook '(lambda () (linum-on)))
 (add-hook 'c-mode-hook '(lambda () (linum-on)))
@@ -84,7 +84,7 @@
 (setq font-lock-maximum-decoration t)
 
 ;; Indent settings
-(setq-default indent-tabs-mode nil)  ;; Отключить возможность ставить отступы Tab-ом
+;;(setq-default indent-tabs-mode nil)  ;; Отключить возможность ставить отступы Tab-ом
 (setq-default tab-width 2)
 (setq-default c-basic-offset 2)
 (setq-default standard-indent 2)
@@ -120,8 +120,8 @@
 (setq query-replace-highlight t)
 
 ;; Easy transition between buffer: M-arrow-keys
-(if (equal nil (equal major-mode 'org-mode))
-    (windmove-default-keybindings 'meta))
+;;(if (equal nil (equal major-mode 'org-mode))
+;;    (windmove-default-keybindings 'meta))
 
 ;; org-mode configure
 (require 'org)
@@ -135,7 +135,8 @@
 ;; (global-set-key "\C-cb" 'org-iswitchb)
 (setq org-log-done t)
 
-(setq org-replace-disputed-keys)
+;; нужно ли? если не понравится необходимо вернуть обратно
+;;(setq org-replace-disputed-keys)
 
 ;; agenda global files configure
 ;; (setq org-agenda-files( list "~/ydisk/proj/websnap/websnap.blup.org"
@@ -198,7 +199,6 @@
 
 ;; activate elpy
 
-
 (elpy-enable)
 
 ;; Fixing a key binding bug in elpy
@@ -245,7 +245,11 @@
   (highlight-indentation-mode 0))
 
 (add-hook 'python-mode-hook 'my-python-mode-hook)
-
+;; py3.5 as default
+;; For elpy
+(setq elpy-rpc-python-command "python3.5")
+;; For interactive shell
+(setq python-shell-interpreter "python3.5")
 
 (global-set-key (kbd "M-x") 'helm-M-x)
 
@@ -274,7 +278,26 @@
 
 ;; (autoload 'cmake-mode "~/.emacs.d/cmake-mode.el" t)
 
+;; web-mode
+;; (require 'web-mode)
+
+;; (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+;; (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+;; (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
+;; (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+;; (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+;; (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+;; (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+;; (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+
+
+;; (setq web-mode-enable-current-element-highlight nil)
+
 (ac-config-default)
+(setq ac-delay 0.1)
+
+;; include web-mode
+(add-to-list 'ac-modes 'web-mode)
 
 (require 'compile)
 (require 'cc-mode)
@@ -291,6 +314,9 @@
 (add-hook 'c++-mode-hook
           (lambda() (define-key c++-mode-map (kbd "C-c C-m") 'cmake-project-configure-project)))
 
+;; add qml syntax highlighting
+;;(add-to-list 'load-path "~/.emacs.d/qml-mode")
+;;(require 'qml-mode)
 
 ;; Disable backup/autosave files
 (setq make-backup-file t)
@@ -301,41 +327,69 @@
 (global-set-key (kbd "M-C-w") 'kill-region)
 
 
+;; (custom-set-faces
+;;  ;; custom-set-faces was added by Custom.
+;;  ;; If you edit it by hand, you could mess it up, so be careful.
+;;  ;; Your init file should contain only one such instance.
+;;  ;; If there is more than one, they won't work right.
+;;  '(default ((t (:background nil))))
+;;  '(custom-variable-tag ((t (:foreground "color-243" :weight bold))))
+;;  '(dired-directory ((t (:foreground "color-142" :weight normal))))
+;;  '(ebrowse-root-class ((t (:foreground "color-68" :weight bold))))
+;;  '(eshell-ls-directory ((t (:foreground "color-142" :weight normal))))
+;;  '(eshell-prompt ((t (:foreground "color-142" :weight bold :height 0.6))))
+;;  '(font-lock-builtin-face ((t (:foreground "color-142"))))
+;;  '(font-lock-constant-face ((t (:foreground "color-100" :weight bold))))
+;;  '(font-lock-function-name-face ((t (:inherit font-lock-builtin-face :weight bold))))
+;;  '(font-lock-keyword-face ((t (:foreground "color-142" :height 0.6))))
+;;  '(font-lock-preprocessor-face ((t (:foreground "color-60"))))
+;;  '(font-lock-string-face ((t (:foreground "color-178"))))
+;;  '(font-lock-type-face ((t (:foreground "color-221" :weight bold))))
+;;  '(helm-grep-file ((t (:foreground "brightyellow" :underline t))))
+;;  '(helm-grep-match ((t (:foreground "color-142"))))
+;;  '(helm-match ((t (:foreground "color-142" :width expanded))))
+;;  '(helm-selection ((t (:background "color-237" :distant-foreground "black"))))
+;;  '(helm-selection-line ((t (:inherit highlight :background "color-237" :distant-foreground "black"))))
+;;  '(helm-visible-mark ((t (:background "color-235"))))
+;;  '(link ((t (:foreground "color-68" :underline t))))
+;;  '(minibuffer-prompt ((t (:foreground "color-222"))))
+;;  '(org-agenda-structure ((t (:foreground "color-69"))))
+;;  '(outline-1 ((t (:foreground "color-178"))))
+;;  '(outline-2 ((t (:foreground "color-184"))))
+;;  '(outline-3 ((t (:foreground "color-142"))))
+;;  '(outline-4 ((t (:foreground "color-144"))))
+;;  '(region ((t (:background "color-237")))))
+;; ;; (custom-set-variables
+;; ;;  ;; custom-set-variables was added by Custom.
+;; ;;  ;; If you edit it by hand, you could mess it up, so be careful.
+;; ;;  ;; Your init file should contain only one such instance.
+;; ;;  ;; If there is more than one, they won't work right.
+;; ;;  '(elpy-modules (quote (elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv elpy-module-highlight-indentation elpy-module-yasnippet elpy-module-sane-defaults))))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(blink-cursor-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:background nil))))
- '(custom-variable-tag ((t (:foreground "color-243" :weight bold))))
- '(dired-directory ((t (:foreground "color-142" :weight normal))))
- '(ebrowse-root-class ((t (:foreground "color-68" :weight bold))))
- '(eshell-ls-directory ((t (:foreground "color-142" :weight normal))))
- '(eshell-prompt ((t (:foreground "color-142" :weight bold :height 0.6))))
- '(font-lock-builtin-face ((t (:foreground "color-142"))))
- '(font-lock-constant-face ((t (:foreground "color-100" :weight bold))))
- '(font-lock-function-name-face ((t (:inherit font-lock-builtin-face :weight bold))))
- '(font-lock-keyword-face ((t (:foreground "color-142" :height 0.6))))
- '(font-lock-preprocessor-face ((t (:foreground "color-60"))))
- '(font-lock-string-face ((t (:foreground "color-178"))))
- '(font-lock-type-face ((t (:foreground "color-221" :weight bold))))
- '(helm-grep-file ((t (:foreground "brightyellow" :underline t))))
- '(helm-grep-match ((t (:foreground "color-142"))))
- '(helm-match ((t (:foreground "color-142" :width expanded))))
- '(helm-selection ((t (:background "color-237" :distant-foreground "black"))))
- '(helm-selection-line ((t (:inherit highlight :background "color-237" :distant-foreground "black"))))
- '(helm-visible-mark ((t (:background "color-235"))))
- '(link ((t (:foreground "color-68" :underline t))))
- '(minibuffer-prompt ((t (:foreground "color-222"))))
- '(org-agenda-structure ((t (:foreground "color-69"))))
- '(outline-1 ((t (:foreground "color-178"))))
- '(outline-2 ((t (:foreground "color-184"))))
- '(outline-3 ((t (:foreground "color-142"))))
- '(outline-4 ((t (:foreground "color-144"))))
- '(region ((t (:background "color-237")))))
-;; (custom-set-variables
-;;  ;; custom-set-variables was added by Custom.
-;;  ;; If you edit it by hand, you could mess it up, so be careful.
-;;  ;; Your init file should contain only one such instance.
-;;  ;; If there is more than one, they won't work right.
-;;  '(elpy-modules (quote (elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv elpy-module-highlight-indentation elpy-module-yasnippet elpy-module-sane-defaults))))
+ '(default ((t (:inherit nil :stipple nil :background "gray13" :foreground "gray88" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 128 :width normal :foundry "DAMA" :family "Ubuntu Mono"))))
+ '(apropos-misc-button ((t (:inherit (font-lock-constant-face button) :foreground "gold"))))
+ '(button ((t (:inherit link :foreground "gold"))))
+ '(company-tooltip-selection ((t (:background "dark khaki"))))
+ '(custom-link ((t (:inherit link :foreground "dark goldenrod"))))
+ '(font-lock-comment-face ((t (:foreground "gray35"))))
+ '(font-lock-constant-face ((t (:foreground "CadetBlue4"))))
+ '(font-lock-function-name-face ((t (:foreground "tan" :weight bold))))
+ '(font-lock-keyword-face ((t (:foreground "khaki4"))))
+ '(font-lock-string-face ((t (:foreground "rosy brown"))))
+ '(font-lock-type-face ((t (:foreground "tan" :weight bold))))
+ '(font-lock-variable-name-face ((t (:foreground "steel blue"))))
+ '(helm-moccur-buffer ((t (:foreground "gold" :underline t))))
+ '(highlight-indentation-face ((t (:inherit fringe :background "gray16"))))
+ '(link ((t (:foreground "deep sky blue" :underline t))))
+ '(minibuffer-prompt ((t (:foreground "dark red"))))
+ '(region ((t (:background "LightSkyBlue4")))))
